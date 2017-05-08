@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="equivform">
+              
+            
+        <p:dataTable id="eqtable" var="equiv" value="#{modifyEquivalenciasView.equivalenciaList}" editable="true" emptyMessage="No existen equivalencias registradas.">
+            
+            <p:ajax event="rowEdit" listener="#{modifyEquivalenciasView.onRowEdit}"/>
+            
+                <f:facet name="header">
+                Equivalencias
+                </f:facet>
+                
+                <p:column style="width: 30px">
+                    <p:cellEditor>
+                    <f:facet name="output"><p:outputLabel value="1 x " style="font-weight: bolder;"/></f:facet>
+                    <f:facet name="input"><p:outputLabel value="1 x " style="font-weight: bolder;"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+            
+            <p:column headerText="Unidad Origen" style="text-align: center">
+                    <p:cellEditor>
+                        <f:facet name="output"><p:outputLabel value="#{equiv.from.nombre}" style="font-weight: bolder;"/></f:facet>
+                        <f:facet name="input"><p:outputLabel value="#{equiv.from.nombre}" style="font-weight: bolder;"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+             
+             
+                <p:column style="width: 20px">
+                    <p:cellEditor>
+                        <f:facet name="output"><p:outputLabel value=" = " style="font-weight: bolder;"/></f:facet>
+                        <f:facet name="input"><p:outputLabel value=" = " style="font-weight: bolder;"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+            
+            <p:column headerText="Cantidad" style="text-align: center">
+                    <p:cellEditor>
+                        <f:facet name="output"><p:outputLabel value="#{equiv.qty}" style="font-weight: bolder;"/></f:facet>
+                        <f:facet name="input"><p:spinner value="#{equiv.qty}" min="0.1" stepFactor="0.25" style="width: 100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+            
+                <p:column style="width: 20px">
+                    <p:cellEditor>
+                        <f:facet name="output"><p:outputLabel value=" x " style="font-weight: bolder;"/></f:facet>
+                        <f:facet name="input"><p:outputLabel value=" x " style="font-weight: bolder;"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+            
+            
+            <p:column headerText="Unidad Destino" style="text-align: center">
+                    <p:cellEditor>
+                        <f:facet name="output"><p:outputLabel value="#{equiv.to.nombre}" style="font-weight: bolder;"/></f:facet>
+                        <f:facet name="input"><p:outputLabel value="#{equiv.to.nombre}" style="font-weight: bolder;"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                
+                <p:column style="width: 20px">
+                <p:rowEditor/>
+                </p:column>
+                
+            </p:dataTable>
+        
+    </h:form>
+    
+</ui:composition>
+

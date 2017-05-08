@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="userform">
+        <p:panel header="Crear nuevo usuario" style="width: 150%">
+        <h:panelGrid columns="3">
+            
+            <p:outputLabel value="Nombre de usuario: " for="usertxt"/>
+            <p:inputText id="usertxt"  binding="#{createUserView.usertxt}" value="#{createUserView.user}" required="true" requiredMessage="Nombre de usuario obligatorio." maxlength="10">
+                <p:ajax event="blur" listener="#{createUserView.checkUser()}" update="usermsg"/>   
+            </p:inputText>
+            <p:message for="usertxt" id="usermsg" showSummary="true" showDetail="false"/>
+            
+            <p:outputLabel for="passtxt" value="Password :"/>
+            <p:password id="passtxt" binding="#{createUserView.passtxt}" value="#{createUserView.pass}" required="true" requiredMessage="Password de usuario obligatorio." maxlength="8"/>
+            <p:message for="passtxt" id="passmsg" showSummary="true" showDetail="false"/>
+            
+            <p:outputLabel for="confpass" value="Confirmar Password :"/>
+            <p:password id="confpass" binding="#{createUserView.passconfirmtxt}" value="#{createUserView.confirmPass}" required="true" requiredMessage="Confirmar password de usuario obligatorio." maxlength="8"/>
+            <p:message for="confpass" id="confpassmsg" showSummary="true" showDetail="false"/>
+            
+            <p:outputLabel for="perfilbox" value="Perfil :" />
+            <p:selectOneMenu id="perfilbox" value="#{createUserView.roleMenu.selectedRole}">
+                <f:selectItems var="roleItem" value="#{createUserView.roleMenu.roles}" itemLabel="#{roleItem}" itemValue="#{roleItem}"/>
+            </p:selectOneMenu>
+            <div/>
+            
+            <p:separator style="width: 150%"/>
+            <div/>
+            <p:commandButton type="submit" value="Crear" update="userform" action="#{createUserView.createUser()}"/>
+            
+        </h:panelGrid>
+        </p:panel>
+        
+   </h:form>
+    
+</ui:composition>
+

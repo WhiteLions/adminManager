@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="dtform">
+              
+        <p:remoteCommand name="onRowEdit" update=":dtform:divisiontable"/>
+        
+        <p:dataTable id="divisiontable" editable="true" var="division" value="#{divisionesView.divisionList}">
+            <f:facet name="header">
+                Divisiones
+            </f:facet>
+           
+            <p:ajax event="rowEdit" listener="#{divisionesView.onRowEdit}" oncomplete="onRowEdit()"/>
+                        
+            <p:column headerText="Nombre">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputLabel value="#{division.nombre}"/></f:facet>
+                    <f:facet name="input"><h:inputText value="#{division.nombre}" style="width: 100%" maxlength="15" required="true" requiredMessage="Nombre division es requerido."/></f:facet>
+                </p:cellEditor>
+            </p:column>
+                     
+            <p:column headerText="Activo">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputLabel value="#{division.activo}"/></f:facet>
+                    <f:facet name="input">
+                        <h:selectOneMenu value="#{division.activo}" style="width: 100%">
+                            <f:selectItems value="#{divisionesView.activeList}" var="active" itemLabel="#{active}" itemValue="#{active}">
+                            </f:selectItems>
+                        </h:selectOneMenu>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            
+            <p:column style="width: 32px">
+                <p:rowEditor/>
+            </p:column>
+        </p:dataTable>   
+</h:form>
+    
+</ui:composition>
+

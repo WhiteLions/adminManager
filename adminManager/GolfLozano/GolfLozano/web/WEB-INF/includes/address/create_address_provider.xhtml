@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="addressform">
+       
+              
+        <p:panel id="address" header="Nueva dirección proveedor" style="width: 150%">
+            <h:panelGrid id="addressgrid" columns="3">
+                    
+                    <p:outputLabel value="Proveedor: "/>
+                    <p:selectOneMenu id="proveedor" value="#{providerAddressView.selectedProvider}" filter="true" filterMatchMode="contains" effect="fade" style="width: 500px" panelStyle="width: 500px">
+                        <f:selectItems value="#{providerAddressView.providerList}" var="prov" itemLabel="#{prov.nombre}&nbsp;#{prov.paterno}" itemValue="#{prov.id_proveedor}"/>
+                    </p:selectOneMenu>
+                    <p:message id="proveedormsg" for="proveedor" showDetail="false" showSummary="true"/>
+                           
+                
+                    <p:outputLabel value="Fiscal : "/>
+                    <p:selectOneRadio id="fiscal" value="#{providerAddressView.address.fiscal}">
+                        <f:selectItem itemLabel="SI" itemValue="SI"/>
+                        <f:selectItem itemLabel="NO" itemValue="NO"/>
+                    </p:selectOneRadio>
+                    <p:message id="fiscalmsg" for="fiscal" showDetail="false" showSummary="true" />  
+                               
+                    <p:outputLabel value="Dirección :"/>
+                    <p:inputText id="direccion" maxlength="254" style="width: 100%" value="#{providerAddressView.address.direccion}" required="true" requiredMessage="Dirección es un campo requerido."/>
+                    <p:message id="direccionmessage" for="direccion" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Código Postal :"/>
+                    <p:inputText id="cp"  maxlength="19" value="#{providerAddressView.address.cp}" required="true" requiredMessage="Código Postal es un campo requerido."/>
+                    <p:message id="cpmessage" for="cp" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Colonia :"/>
+                    <p:inputText id="colonia"  maxlength="44" value="#{providerAddressView.address.colonia}" required="true" requiredMessage="Colonia es un campo requerido."/>
+                    <p:message id="coloniamessage" for="colonia" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="País :"/>
+                    <p:selectOneMenu id="pais" binding="#{providerAddressView.paisBox}" value="#{providerAddressView.selectedPais}" filter="true" filterMatchMode="contains" effect="fade" style="width: 500px" panelStyle="width: 500px">
+                        <p:ajax id="paisajax" listener="#{providerAddressView.paisChangeListener()}" update=":addressform:estado,:addressform:ciudad"/>
+                        <f:selectItem itemLabel="Selecciona..." itemValue="0"/>
+                        <f:selectItems value="#{providerAddressView.paisList}" var="pas" itemLabel="#{pas.nombre}" itemValue="#{pas.id}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value=""/>
+                    
+                    <p:outputLabel value="Estado :"/>
+                    <p:selectOneMenu id="estado"  binding="#{providerAddressView.estadoBox}" value="#{providerAddressView.selectedEstado}" filter="true" filterMatchMode="contains" effect="fade" style="width: 500px" panelStyle="width: 500px">
+                        <p:ajax  id="estadoajax" listener="#{providerAddressView.estadoChangeListener()}" update=":addressform:ciudad"/>
+                        <f:selectItem itemLabel="Selecciona..." itemValue="0"/>
+                        <f:selectItems value="#{providerAddressView.estadoList}" var="edo" itemLabel="#{edo.nombre}" itemValue="#{edo.id}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value=""/>
+                    
+                    <p:outputLabel value="Ciudad :"/>
+                    <p:selectOneMenu id="ciudad" binding="#{providerAddressView.ciudadBox}" value="#{providerAddressView.selectedCiudad}" filter="true" filterMatchMode="contains" effect="fade" style="width: 500px" panelStyle="width: 500px">
+                     
+                        <f:selectItem itemLabel="Selecciona..." itemValue="0"/>
+                        <f:selectItems value="#{providerAddressView.ciudadList}" var="ciu" itemLabel="#{ciu.nombre}" itemValue="#{ciu.id}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value=""/>
+                    
+                    <p:outputLabel value="Etiqueta :"/>
+                    <p:inputTextarea id="etiqueta" rows="2" cols="50" maxlength="254" value="#{providerAddressView.address.etiqueta}" required="false" autoResize="false"/>
+                    <p:message id="etiquetamessage" for="etiqueta" showDetail="false" showSummary="true"/>
+                    
+                    <p:separator/>
+                    <p:separator/>
+                    <p:commandButton type="submit" value="Crear" update=":addressform:addressgrid" action="#{providerAddressView.createProviderAddress()}"/>
+                    
+                    <p:outputLabel value=""/>
+                    <p:message id="paismsg" for="pais" showDetail="false" showSummary="true"/>
+                    <p:outputLabel value=""/>
+                    <p:outputLabel value=""/>
+                    <p:message id="estadomsg" for="estado" showDetail="false" showSummary="true"/>
+                    <p:outputLabel value=""/>
+                    <p:outputLabel value=""/>
+                    <p:message id="ciudadmsg" for="ciudad" showDetail="false" showSummary="true"/>
+                    <p:outputLabel value=""/>
+                    
+                </h:panelGrid>
+ 
+        </p:panel>
+       
+   </h:form>
+    
+</ui:composition>
+

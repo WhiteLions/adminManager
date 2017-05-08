@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="contactform">
+       
+              
+        <p:panel id="contact" header="Nuevo contacto proveedor" style="width: 150%">
+            <h:panelGrid id="contactgrid" columns="3">
+                    
+                    <p:outputLabel value="Proveedor : "/>
+                    <p:selectOneMenu id="proveedor" value="#{contactProviderView.selectedProvider}" effect="fade" filter="true" filterMatchMode="contains" style="width: 500px" panelStyle="width: 500px">
+                        <f:selectItems value="#{contactProviderView.providerList}" var="prov" itemLabel="#{prov.nombre}&nbsp;#{prov.paterno}" itemValue="#{prov.id_proveedor}"/>
+                    </p:selectOneMenu>
+                    <p:message id="proveedormsg" for="proveedor" showDetail="false" showSummary="true"/>
+                
+                    <p:outputLabel value="Nombre :"/>
+                    <p:inputText id="nombre" style="width: 100%" maxlength="29" value="#{contactProviderView.contact.nombre}" required="true" requiredMessage="Nombre es un campo requerido."/>
+                    <p:message id="nombremessage" for="nombre" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Paterno :"/>
+                    <p:inputText id="paterno" maxlength="29" value="#{contactProviderView.contact.paterno}" required="true" requiredMessage="Paterno es un campo requerido."/>
+                    <p:message id="paternomessage" for="paterno" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Materno :"/>
+                    <p:inputText id="materno" maxlength="29" value="#{contactProviderView.contact.materno}" required="false"/>
+                    <p:message id="maternomessage" for="materno" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Télefono :"/>
+                    <p:inputText id="telefono" maxlength="29" value="#{contactProviderView.contact.telefono}" required="false"/>
+                    <p:message id="telefonomessage" for="telefono" showDetail="false" showSummary="true"/>
+                                                      
+                    <p:outputLabel value="Celular :"/>
+                    <p:inputText id="celular" maxlength="29" value="#{contactProviderView.contact.celular}" required="false"/>
+                    <p:message id="celularmessage" for="celular" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Fax :"/>
+                    <p:inputText id="fax" maxlength="29" value="#{contactProviderView.contact.fax}" required="false"/>
+                    <p:message id="faxmessage" for="fax" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="E-mail :"/>
+                    <p:inputText id="email" maxlength="29" value="#{contactProviderView.contact.email}" required="false"/>
+                    <p:message id="emailmessage" for="email" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Etiqueta :"/>
+                    <p:inputTextarea id="etiqueta" autoResize="false" rows="3" cols="50" maxlength="254" value="#{contactProviderView.contact.etiqueta}" required="false"/>
+                    <p:message id="etiquetamessage" for="etiqueta" showDetail="false" showSummary="true"/>
+                    
+                    <p:separator/>
+                    <p:separator/>
+                    <p:commandButton type="submit" value="Crear" action="#{contactProviderView.createContactProvider()}" update=":contactform:contactgrid"/>
+                    
+                </h:panelGrid>
+ 
+        </p:panel>
+       
+   </h:form>
+    
+</ui:composition>
+

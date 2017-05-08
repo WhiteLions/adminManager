@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="createSalidaForm">
+       
+        <p:panel header="Registrar salida">
+            <h:panelGrid columns="6">
+                
+                <p:outputLabel value="Folio :"/>
+                <p:inputText id="folio" value="#{createSalidaView.selectedSalida.folio}" maxlength="45" required="true" requiredMessage="Folio es un campo requerido."/>
+                <p:message id="folioMsg" for="folio" showDetail="false" showSummary="true"/>
+                
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                
+                <p:outputLabel value="Tipo orden :"/>
+                <p:selectOneMenu id="tipoOrden" value="#{createSalidaView.selectedSalida.idTipoOrden}">
+                    <f:selectItems value="#{createSalidaView.tipoOrdenList}" var="tipoOrden" itemValue="#{tipoOrden.ID}" itemLabel="#{tipoOrden.NOMBRE}"/>
+                </p:selectOneMenu>
+                <p:message id="tipoOrdenMsg" for="tipoOrden" showDetail="false" showSummary="true"/>
+                
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                
+                <p:outputLabel value="Cliente :"/>
+                <p:selectOneMenu id="cliente" value="#{createSalidaView.selectedSalida.idCliente}" filter="true" filterMatchMode="contains">
+                    <f:selectItems value="#{createSalidaView.clienteList}" var="clienteBean" itemValue="#{clienteBean.ID}" itemLabel="#{clienteBean.NOMBRE}&nbsp;#{clienteBean.PATERNO}"/>
+                </p:selectOneMenu>
+                <p:message id="clienteMsg" for="cliente" showDetail="false" showSummary="true"/>
+                
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                
+                <p:outputLabel value="Observaciones : "/>
+                <p:inputTextarea id="observaciones" value="#{createSalidaView.selectedSalida.observaciones}" maxlength="255" required="false" cols="80" rows="3"/>
+                <p:message id="observacionMsg" for="observaciones" showDetail="false" showSummary="true"/>
+                
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                
+                <p:separator/>
+                <p:separator/>
+                <p:separator/>
+                
+                <p:separator/>
+                <p:separator/>
+                <p:separator/>
+                
+                <p:outputLabel value="Producto :"/>
+                <p:selectOneMenu id="producto" filter="true" filterMatchMode="contains" value="#{createSalidaView.selectedProducto}" converter="#{createSalidaProductoBeanConverter}">
+                    <p:ajax  id="productoAjax" listener="#{createSalidaView.loadUnidades()}" update="@([id$=uniSalida]),@([id$=productBtn]),@([id$=cantidad])"/>
+                    <f:selectItems value="#{createSalidaView.productosList}" var="producto" itemLabel="#{producto.NOMBRE}" itemValue="#{producto}"/>
+                </p:selectOneMenu>
+                <p:message id="productomsg" for="producto" showSummary="true" showDetail="false"/> 
+                
+                
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                
+                <p:outputLabel value="Cantidad : "/>
+                <p:inputText id="cantidad" maxlength="7" value="#{createSalidaView.selectedCantidad}" disabled="#{createSalidaView.selectedProducto == null}"/>
+                <p:message id="cantidadMsg" for="cantidad" showDetail="false" showSummary="true"/>                              
+                
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+               
+                <p:outputLabel value="Unidad Salida :"/>
+                <p:selectOneMenu id="uniSalida" value="#{createSalidaView.selectedUnidad}" converter="#{createSalidaUnidadBeanConverter}" disabled="#{createSalidaView.selectedProducto == null}">
+                    <f:selectItems value="#{createSalidaView.unidadesList}" var="unidad" itemLabel="#{unidad.NOMBRE}" itemValue="#{unidad}"/>
+                </p:selectOneMenu>
+                <p:message id="uniSalidaMsg" for="uniSalida" showSummary="true" showDetail="false"/>
+                
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                
+                <p:commandButton type="submit" value="Registrar salida" action="#{createSalidaView.myAction()}" icon="ui-icon-check" update=":createSalidaForm"/>
+                <p:commandButton id="productBtn" type="submit" value="Producto" action="#{createSalidaView.addProductToList()}" icon="ui-icon-plusthick" update=":createSalidaForm" disabled="#{createSalidaView.selectedProducto == null}"/>
+                
+            </h:panelGrid>
+            
+            
+                     
+            <p:dataTable id="productosDetalleTable" var="prodDetalle" value="#{createSalidaView.selectedSalida.productosList}" emptyMessage="No se han agregado productos a la salida.">
+                
+                <p:column headerText="ID">
+                    <p:outputLabel value="#{prodDetalle.producto.ID}"/>
+                </p:column>
+                
+                <p:column headerText="Nombre">
+                    <p:outputLabel value="#{prodDetalle.producto.NOMBRE}"/>
+                </p:column>
+                
+                <p:column headerText="Unidad">
+                    <p:outputLabel value="#{prodDetalle.unidad.NOMBRE}"/>
+                </p:column>
+                
+                <p:column headerText="Cantidad">
+                    <p:outputLabel value="#{prodDetalle.cantidad}"/>
+                </p:column>
+                
+                <p:column headerText=""> 
+                    <p:commandButton type="submit" actionListener="#{createSalidaView.removeProductFromList(prodDetalle)}" update="@([id$=productosDetalleTable])" icon="ui-icon-trash"/>
+                </p:column>
+                
+            </p:dataTable>
+           
+        </p:panel>
+        
+   </h:form>
+    
+</ui:composition>
+

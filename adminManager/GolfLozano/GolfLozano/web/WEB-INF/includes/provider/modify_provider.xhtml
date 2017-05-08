@@ -1,0 +1,307 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+  <h:form id="dtform">
+      
+      <p:tabView dynamic="true" cache="true" id="provbvw" >
+          
+          <p:tab title="Consulta">
+                     
+              <p:dataTable id="providertable" editable="true" emptyMessage="No existen registros de proveedores." var="provider" value="#{modifyProviderView.providerList}" filteredValue="#{modifyProviderView.filteredList}" selectionMode="single" rowKey="#{provider.id}" selection="#{modifyProviderView.selectedProvider}">
+            <f:facet name="header">
+                <p:outputPanel style="text-align: center">
+                <h:outputText value="Proveedores" />
+            </p:outputPanel>
+            </f:facet>
+           
+            <p:ajax event="rowEdit" listener="#{modifyProviderView.onRowEdit}"/>
+            <p:ajax event="rowSelect" listener="#{modifyProviderView.onRowSelect}" update=":dtform:provbvw:contactotable,:dtform:provbvw:direcciontable,@([id$=productodetail])"/>
+        <!--    <p:ajax event="rowUnselect" listener="#{modifyProviderView.onRowUnSelect}"/> -->
+            
+            <p:column style="width: 20px">
+                <span class="ui-icon ui-icon-extlink"/>
+            </p:column>
+               
+            <p:column headerText="Nombre" filterBy="#{provider.nombre}" filterFunction="#{modifyProviderView.filterbyName}" style="width: 300px">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputLabel value="#{provider.nombre}" style="width: 50px"/></f:facet>
+                    <f:facet name="input"><h:inputText value="#{provider.nombre}" style="width: 100%" maxlength="99" required="true" requiredMessage="Nombre proveedor es requerido."/></f:facet>
+                </p:cellEditor>
+            </p:column>
+            
+            <p:column headerText="Paterno" filterBy="#{provider.paterno}" filterFunction="#{modifyProviderView.filterbyLastName}" style="width: 150px">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputLabel value="#{provider.paterno}"/></f:facet>
+                    <f:facet name="input"><h:inputText value="#{provider.paterno}"  disabled="#{provider.pfisica == 'NO'}" style="width: 100%" maxlength="29" required="true" requiredMessage="Paterno proveedor es requerido."/></f:facet>
+                </p:cellEditor>
+            </p:column>
+            
+            <p:column headerText="Materno" style="width: 150px">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputLabel value="#{provider.materno}"/></f:facet>
+                    <f:facet name="input"><h:inputText value="#{provider.materno}"  disabled="#{provider.pfisica == 'NO'}" style="width: 100%" maxlength="29" required="false"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+            
+            <p:column headerText="RFC" style="width: 160px">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputLabel value="#{provider.rfc}"/></f:facet>
+                    <f:facet name="input"><h:inputText value="#{provider.rfc}" style="width: 100%" maxlength="14" required="true" requiredMessage="RFC proveedor es requerido."/></f:facet>
+                </p:cellEditor>
+            </p:column>
+            
+            <p:column headerText="Fisíca" style="width: 60px; text-align: center">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputLabel value="#{provider.pfisica}"/></f:facet>
+                    <f:facet name="input"><h:outputLabel value="#{provider.pfisica}"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+                     
+            <p:column headerText="Activo" style="width: 60px; text-align: center">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputLabel value="#{provider.activo}"/></f:facet>
+                    <f:facet name="input">
+                        <h:selectOneMenu value="#{provider.activo}" style="width: 100%">
+                            <f:selectItem itemLabel="SI" itemValue="SI"></f:selectItem>
+                            <f:selectItem itemLabel="NO" itemValue="NO"></f:selectItem>
+                        </h:selectOneMenu>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            
+            <p:column headerText="Desc">
+                <p:cellEditor>
+                    <f:facet name="output"><p:inputTextarea value="#{provider.desc}" cols="45" rows="2" maxlength="254" readonly="true" autoResize="false"/></f:facet>
+                    <f:facet name="input"><p:inputTextarea value="#{provider.desc}" cols="45" rows="2" maxlength="254" readonly="false" autoResize="false"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+            
+            <p:column style="width: 20px">
+                <p:rowEditor/>
+            </p:column>
+            
+        </p:dataTable>  
+              
+          </p:tab>
+          <!-- Tab de contactos -->
+          <p:tab title="Contactos">
+              <p:dataTable  id="contactotable" emptyMessage="No existen registros de contacto." value="#{modifyProviderView.contactList}" var="contacto" editable="true">
+                  <p:ajax event="rowEdit" listener="#{modifyProviderView.onContactRowEdit}"/>
+                  <f:facet name="header">
+                      Contactos&nbsp;#{modifyProviderView.selectedProvider.nombre}&nbsp;#{modifyProviderView.selectedProvider.paterno}
+                  </f:facet>
+                  
+                  <p:column headerText="Nombre" style="width: 150px">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{contacto.nombre}"/></f:facet>
+                          <f:facet name="input"><h:inputText value="#{contacto.nombre}" style="width: 100%" maxlength="29" required="true" requiredMessage="Nombre contacto es campo requerido."/></f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="Paterno" style="width: 130px">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{contacto.paterno}"/></f:facet>
+                          <f:facet name="input"><h:inputText value="#{contacto.paterno}" style="width: 100%" maxlength="29" required="true" requiredMessage="Paterno contacto es campo requerido."/></f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="Materno" style="width: 130px">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{contacto.materno}"/></f:facet>
+                          <f:facet name="input"><h:inputText value="#{contacto.materno}" style="width: 100%" maxlength="29"/></f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="Tel" style="width: 120px">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{contacto.telefono}"/></f:facet>
+                          <f:facet name="input"><h:inputText value="#{contacto.telefono}" style="width: 100%" maxlength="29"/></f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="Cel" style="width: 120px">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{contacto.celular}"/></f:facet>
+                          <f:facet name="input"><h:inputText value="#{contacto.celular}" style="width: 100%" maxlength="29"/></f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="Fax" style="width: 120px">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{contacto.fax}"/></f:facet>
+                          <f:facet name="input"><h:inputText value="#{contacto.fax}" style="width: 100%" maxlength="29"/></f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                 
+                  <p:column headerText="Email" style="width: 180px">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{contacto.email}"/></f:facet>
+                          <f:facet name="input"><h:inputText value="#{contacto.email}" style="width: 100%" maxlength="29"/></f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="Activo" style="width: 60px; text-align: center">
+                      <p:cellEditor>
+                        <f:facet name="output"><h:outputLabel value="#{contacto.activo}"/></f:facet>
+                        <f:facet name="input">
+                            <h:selectOneMenu value="#{contacto.activo}" style="width: 100%">
+                                <f:selectItem itemLabel="SI" itemValue="SI"></f:selectItem>
+                                <f:selectItem itemLabel="NO" itemValue="NO"></f:selectItem>
+                            </h:selectOneMenu>
+                        </f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="Desc" >
+                      <p:cellEditor>
+                          <f:facet name="output"><p:inputTextarea value="#{contacto.etiqueta}" cols="30" rows="2" maxlength="254" readonly="true" autoResize="false"/></f:facet>
+                          <f:facet name="input"><p:inputTextarea value="#{contacto.etiqueta}"  cols="30" rows="2" maxlength="254" readonly="false" autoResize="false"/></f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column style="width: 20px">
+                        <p:rowEditor/>
+                  </p:column>
+                  
+              </p:dataTable>
+          </p:tab>
+          
+          <!-- tab de direcciones-->
+          <p:tab title="Direcciones">
+              <p:dataTable  id="direcciontable" emptyMessage="No existen registros de dirección." value="#{modifyProviderView.addressList}" var="dir" editable="true">
+                  <p:ajax event="rowEdit" listener="#{modifyProviderView.onDirRowEdit}" update="@([id$=direcciontable])"/>
+                  <p:ajax event="rowEditCancel" listener="#{modifyProviderView.onDirRowCancel}"/>
+                  <f:facet name="header">
+                      Direcciónes&nbsp;#{modifyProviderView.selectedProvider.nombre}&nbsp;#{modifyProviderView.selectedProvider.paterno}
+                  </f:facet>
+                  
+                  <p:column headerText="Dirección" style="width: 250px">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{dir.direccion}"/></f:facet>
+                          <f:facet name="input"><h:inputText value="#{dir.direccion}" style="width: 100%" maxlength="254" required="true" requiredMessage="Dirección es campo requerido."/></f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="Col" style="width: 130px">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{dir.colonia}"/></f:facet>
+                          <f:facet name="input"><h:inputText value="#{dir.colonia}" style="width: 100%" maxlength="44"/></f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="CP" style="width: 130px">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{dir.cp}"/></f:facet>
+                          <f:facet name="input"><h:inputText value="#{dir.cp}" style="width: 100%" maxlength="19"/></f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="País" style="width: 120px">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{dir.paisStr}"/></f:facet>
+                          <f:facet name="input">
+                              <p:selectOneMenu id="pais" value="#{modifyProviderView.paisCombo.selectedPais}" filter="true" filterMatchMode="contains" effect="fade" style="width: 100%" panelStyle="width: 120px">
+                                  <p:ajax id="paisajax" listener="#{modifyProviderView.paisCombo.paisChangeListener()}" update="@([id$=estado])"/>
+                                <f:selectItem itemLabel="->#{dir.paisStr}" itemValue="0"/>
+                                <f:selectItems value="#{modifyProviderView.paisCombo.paisList}" var="pas" itemLabel="#{pas.nombre}" itemValue="#{pas.id}"/>
+                              </p:selectOneMenu> 
+                          </f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="Edo" style="width: 120px">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{dir.edoStr}"/></f:facet>
+                          <f:facet name="input">
+                              <p:selectOneMenu id="estado" value="#{modifyProviderView.paisCombo.selectedEstado}" filter="true" filterMatchMode="contains" effect="fade" style="width: 100%" panelStyle="width: 120px">
+                                <p:ajax  id="estadoajax" listener="#{modifyProviderView.paisCombo.estadoChangeListener()}" update="@([id$=ciudad])"/>
+                                <f:selectItem itemLabel="->#{dir.edoStr}" itemValue="0"/>
+                                <f:selectItems value="#{modifyProviderView.paisCombo.estadoList}" var="edo" itemLabel="#{edo.nombre}" itemValue="#{edo.id}"/>
+                              </p:selectOneMenu>
+                          </f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="Ciudad" style="width: 150px">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{dir.municipioStr}"/></f:facet>
+                          <f:facet name="input">
+                              <p:selectOneMenu id="ciudad" value="#{modifyProviderView.paisCombo.selectedCiudad}" filter="true" filterMatchMode="contains" effect="fade" style="width: 100%" panelStyle="width: 150px">
+                     
+                                  <f:selectItem itemLabel="->#{dir.municipioStr}" itemValue="0"/>
+                                <f:selectItems value="#{modifyProviderView.paisCombo.ciudadList}" var="ciu" itemLabel="#{ciu.nombre}" itemValue="#{ciu.id}"/>
+                              </p:selectOneMenu>
+                          </f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                 
+                  <p:column headerText="Fiscal" style="width: 60px;text-align: center">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{dir.fiscal}"/></f:facet>
+                          <f:facet name="input">
+                            <h:selectOneMenu value="#{dir.fiscal}" style="width: 100%">
+                                <f:selectItem itemLabel="SI" itemValue="SI"></f:selectItem>
+                                <f:selectItem itemLabel="NO" itemValue="NO"></f:selectItem>
+                            </h:selectOneMenu>
+                        </f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="Activo" style="width: 60px; text-align: center">
+                      <p:cellEditor>
+                          <f:facet name="output"><h:outputLabel value="#{dir.status}"/></f:facet>
+                        <f:facet name="input">
+                            <h:selectOneMenu value="#{dir.status}" style="width: 100%">
+                                <f:selectItem itemLabel="SI" itemValue="SI"></f:selectItem>
+                                <f:selectItem itemLabel="NO" itemValue="NO"></f:selectItem>
+                            </h:selectOneMenu>
+                        </f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column headerText="Desc" >
+                      <p:cellEditor>
+                          <f:facet name="output"><p:inputTextarea value="#{dir.etiqueta}"  cols="30" rows="2" maxlength="254" readonly="true" autoResize="false"/></f:facet>
+                          <f:facet name="input"><p:inputTextarea value="#{dir.etiqueta}"  cols="30" rows="2" maxlength="254" readonly="false" autoResize="false"/></f:facet>
+                      </p:cellEditor>
+                  </p:column>
+                  
+                  <p:column style="width: 20px">
+                        <p:rowEditor/>
+                  </p:column>
+                  
+              </p:dataTable>
+ 
+          </p:tab>
+          
+           <p:tab title="Productos" >
+            
+            <h:panelGrid columns="1" id="productodetail">
+                <h:panelGroup>
+                    <p:panel id="prodlist" header="Productos registrados para #{modifyProviderView.selectedProvider.nombre}">
+                        <p:dataTable id="productostable" emptyMessage="No existen registros de producto." var="produ" value="#{modifyProviderView.provProdList}">
+                                 <p:column headerText="Nombre" style="width: 300px; text-align: center">
+                                     <p:outputLabel value="#{produ.nombre}"/>
+                                 </p:column>                               
+                                 <p:column headerText="No. parte proveedor" style="width: 300px; text-align: center">
+                                     <p:outputLabel value="#{produ.noPteProv}"/>
+                                 </p:column>  
+                                 <p:column headerText="Ubicación" style="width: 300px; text-align: center">
+                                     <p:outputLabel value="#{produ.ubicacion}"/>
+                                 </p:column>  
+                             </p:dataTable>
+                         </p:panel>
+                </h:panelGroup>
+            </h:panelGrid>
+            
+        </p:tab>
+          
+      </p:tabView>
+</h:form>
+    
+</ui:composition>

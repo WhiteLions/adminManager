@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    
+    <h:form id="modifyproductform">
+    
+    <p:tabView id="modifyproducttab" dynamic="true" cache="true">
+        
+        
+        
+        <p:tab title="Consulta">
+            
+            <p:dataTable id="productostable" emptyMessage="No existen registros de productos." widgetVar="productsTable" editable="false" var="producto" value="#{modifyProductView.productList}"  filteredValue="#{modifyProductView.productListFiltered}" selectionMode="single" rowKey="#{producto.id_producto}" selection="#{modifyProductView.selectedProduct}">
+                
+                <f:facet name="header">
+                    <p:outputPanel style="text-align: center">
+                    <h:outputText value="Productos" />
+                    </p:outputPanel>
+                 </f:facet>
+                
+                <p:ajax event="rowSelect" listener="#{modifyProductView.onRowSelect}" update="@([id$=detallepanel]),@([id$=proveedordetail])"/>
+                
+                <p:column id="help" style="width: 20px">
+                <span class="ui-icon ui-icon-extlink"/>
+                </p:column>
+                
+                <p:column headerText="ID" filterBy="#{producto.id_producto}" filterMatchMode="contains" style="width: 60px; text-align: center">
+                    <p:outputLabel value="#{producto.id_producto}"/>
+                </p:column>
+                
+                <p:column headerText="Nombre" filterBy="#{producto.nombre}" filterFunction="#{modifyProductView.filterbyName}" style="width: 300px; text-align: center">
+                    <p:outputLabel value="#{producto.nombre}"/>
+                </p:column>
+                
+                <p:column headerText="Unidad de almacenamiento" style="width: 300px; text-align: center">
+                    <p:outputLabel value="#{producto.nombre_unidad}"/>
+                </p:column>
+                
+                <p:column headerText="Ubicación" style="width: 300px; text-align: center">
+                    <p:outputLabel value="#{producto.ubicacion}"/>
+                </p:column>
+                
+                
+                
+            </p:dataTable>
+            
+        </p:tab>
+        
+        <p:tab title="Detalle">
+            
+              
+            <p:panel id="detallepanel" header="#{modifyProductView.selectedProduct.id_producto}&nbsp;#{modifyProductView.selectedProduct.nombre}">
+                
+            <h:panelGrid columns="3" >
+                
+                    
+                <p:graphicImage id="fotoimg" cache="false" rendered="#{modifyProductView.selectedProduct.id_producto != -1}" value="/FotosLozano/#{modifyProductView.selectedProduct.id_producto}.#{modifyProductView.selectedProduct.foto}" height="200" width="200" />
+            <p:fileUpload  id="foto" rendered="#{modifyProductView.selectedProduct.id_producto != -1}" invalidFileMessage="Foto debe ser JPEG/JPG o PNG." allowTypes="/(\.|\/)(jpe?g|png)$/" mode="advanced" cancelLabel="Cancelar" auto="false" label="Abrir" uploadLabel="Guardar" fileUploadListener="#{modifyProductView.fileUploadLsnr}" update="@([id$=fotoimg])"/>
+            <p:outputLabel rendered="#{modifyProductView.selectedProduct.id_producto == -1}" value=""/>
+            <p:outputLabel rendered="#{modifyProductView.selectedProduct.id_producto != -1}" value=""/>
+                                 
+            <p:outputLabel value="Nombre : "/>
+            <p:inputText id="nombrepro"  disabled="#{modifyProductView.selectedProduct.id_producto == -1}" value="#{modifyProductView.selectedProduct.nombre}"  style="width: 500px" maxlength="49" required="true" requiredMessage="Nombre producto es un campo requerido."/>
+            <p:message id="nombrepromsg" for="nombrepro" showSummary="true" showDetail="false"/>
+            
+            <p:outputLabel value="Unidad de almacenamiento : "/>
+            <p:outputLabel id="unidadalma" rendered="#{modifyProductView.selectedProduct.id_producto != -1}" value="#{modifyProductView.selectedProduct.nombre_unidad}"/>                
+            <p:outputLabel id="unidadalmadummy" rendered="#{modifyProductView.selectedProduct.id_producto == -1}" value=""/>
+            <p:message id="unidadalmamsg" for="unidadalma" showSummary="true"/>           
+            
+            <p:outputLabel value="Almacén : "/>
+            <p:selectOneMenu id="almacen" disabled="#{modifyProductView.selectedProduct.id_producto == -1}" value="#{modifyProductView.selectedProduct.id_almacen}" style="width: 350px" filter="true" filterMatchMode="contains" effect="fade">               
+                <f:selectItems var="almacen" value="#{modifyProductView.almacenList}" itemLabel="#{almacen.nombre}" itemValue="#{almacen.id}"/>
+            </p:selectOneMenu>
+            <p:message id="almacenmsg" for="almacen" showSummary="true"/>  
+            
+            <p:outputLabel value="División : "/>
+            <p:selectOneMenu id="division" disabled="#{modifyProductView.selectedProduct.id_producto == -1}" value="#{modifyProductView.selectedProduct.id_division}" style="width: 350px" filter="true" filterMatchMode="contains" effect="fade">
+                <f:selectItems var="division" value="#{modifyProductView.divisionList}" itemLabel="#{division.nombre}" itemValue="#{division.id}"/>
+            </p:selectOneMenu>
+            <p:message id="divisionmsg" for="division" showSummary="true"/>  
+            
+            <p:outputLabel value="Familia : "/>
+            <p:selectOneMenu id="familia" disabled="#{modifyProductView.selectedProduct.id_producto == -1}" value="#{modifyProductView.selectedProduct.id_familia}" style="width: 350px" filter="true" filterMatchMode="contains" effect="fade">
+                <f:selectItems var="familia" value="#{modifyProductView.familiaList}" itemLabel="#{familia.nombre}" itemValue="#{familia.id}"/>
+            </p:selectOneMenu>
+            <p:message id="familiamsg" for="familia" showSummary="true"/> 
+            
+            
+            <p:outputLabel value="Nacional : "/>
+            <p:selectOneRadio id="nacional" disabled="#{modifyProductView.selectedProduct.id_producto == -1}" value="#{modifyProductView.selectedProduct.nacional}">
+                <f:selectItem itemLabel="SI" itemValue="SI"/>
+                <f:selectItem itemLabel="NO" itemValue="NO"/>
+            </p:selectOneRadio>
+            <p:message id="nacionalmsg" for="nacional"/>
+            
+            <p:outputLabel value="Consignación : "/>
+            <p:selectOneRadio id="consignacion" disabled="#{modifyProductView.selectedProduct.id_producto == -1}" value="#{modifyProductView.selectedProduct.consignacion}">
+                <f:selectItem itemLabel="SI" itemValue="SI"/>
+                <f:selectItem itemLabel="NO" itemValue="NO"/>
+            </p:selectOneRadio>
+            <p:message id="consignacionmsg" for="consignacion"/>
+            
+            <p:outputLabel value="Activo : "/>
+            <p:selectOneRadio id="activo" disabled="#{modifyProductView.selectedProduct.id_producto == -1}" value="#{modifyProductView.selectedProduct.activo}">
+                <f:selectItem itemLabel="SI" itemValue="SI"/>
+                <f:selectItem itemLabel="NO" itemValue="NO"/>
+            </p:selectOneRadio>
+            <p:message id="activomsg" for="activo"/>
+            
+            <p:outputLabel value="OEM : "/>
+            <p:inputText id="oem" disabled="#{modifyProductView.selectedProduct.id_producto == -1}" style="width: 350px" value="#{modifyProductView.selectedProduct.oem}" maxlength="29" />
+            <p:message id="oemmsg" for="oem"/>
+            
+            <p:outputLabel value="No. parte proveedor : "/>
+            <p:inputText id="nopte" disabled="#{modifyProductView.selectedProduct.id_producto == -1}" style="width: 350px" value="#{modifyProductView.selectedProduct.noPteProv}" maxlength="29" />
+            <p:message id="noptemsg" for="nopte"/>
+            
+          
+            <p:outputLabel value="Ubicación: "/>
+            <p:inputText id="ubicacion" disabled="#{modifyProductView.selectedProduct.id_producto == -1}" style="width: 350px" value="#{modifyProductView.selectedProduct.ubicacion}" maxlength="29" />
+            <p:message id="ubicacionmsg" for="ubicacion"/>
+                         
+                     
+            <p:outputLabel value="Descripción Español : "/>
+            <p:inputTextarea id="descesp" disabled="#{modifyProductView.selectedProduct.id_producto == -1}"  value="#{modifyProductView.selectedProduct.desc_esp}" maxlength="254"  cols="35" rows="3" autoResize="true"/>
+            <p:message id="descespmsg" for="descesp"/>
+            
+            <p:outputLabel value="Descripción Inglés : "/>
+            <p:inputTextarea id="descing"  disabled="#{modifyProductView.selectedProduct.id_producto == -1}" value="#{modifyProductView.selectedProduct.desc_ing}" maxlength="254"  cols="35" rows="3" autoResize="true"/>
+            <p:message id="descingmsg" for="descing"/>
+            
+            <p:outputLabel value="Observaciones : "/>
+            <p:inputTextarea id="observacion" disabled="#{modifyProductView.selectedProduct.id_producto == -1}" value="#{modifyProductView.selectedProduct.observaciones}" maxlength="254"  cols="35" rows="3" autoResize="true"/>
+            <p:message id="observacionmsg" for="observacion"/>
+       
+            <p:commandButton type="submit" value="Guardar" rendered="#{modifyProductView.selectedProduct.id_producto != -1}" action="#{modifyProductView.updateProduct()}" update=":modifyproductform"/>
+            
+            
+            
+            </h:panelGrid>
+                
+            </p:panel>
+            
+        </p:tab>
+        
+        <p:tab title="Proveedores" >
+            
+            <h:panelGrid columns="1" id="proveedordetail">
+                <h:panelGroup>
+                    <p:panel id="agregaprov" header="Agregar proveedor" toggleable="true">
+                             <h:panelGrid columns="3">
+                                 <p:outputLabel value="Proveedor : "/>
+                                 <p:selectOneMenu id="prov" disabled="#{modifyProductView.selectedProduct.id_producto == -1}" value="#{modifyProductView.selectedProvider}" style="width: 500px" filter="true" filterMatchMode="contains" effect="fade">
+                                     <f:selectItems var="prov" value="#{modifyProductView.providerList}" itemLabel="#{prov.nombre}&nbsp;#{prov.paterno}" itemValue="#{prov.id_proveedor}"/>
+                                 </p:selectOneMenu>
+                                 <p:commandButton type="submit" disabled="#{modifyProductView.selectedProduct.id_producto == -1}" value="Ligar" action="#{modifyProductView.ligarProvProd()}" update="@([id$=proveedordetail])"/>
+                             </h:panelGrid>
+                         </p:panel>
+                    
+                    <p:tooltip id="provtooltip" for="prov" value="Solo los proveedores no ligados son mostrados."/>
+                </h:panelGroup>
+                <h:panelGroup>
+                    <p:panel id="provlist" header="Proveedores registrados para #{modifyProductView.selectedProduct.nombre}">
+                        <p:dataTable id="proveedorestable" emptyMessage="No existen registros de proveedor." var="prove" value="#{modifyProductView.productProviderList}">
+                                 <p:column headerText="Nombre" style="width: 300px; text-align: center">
+                                     <p:outputLabel value="#{prove.nombre}&nbsp;#{prove.paterno}"/>
+                                 </p:column>
+                                 <p:column id="help" style="width: 20px; text-align: center">                                 
+                                     <p:commandButton value="Borrar" type="submit" action="#{modifyProductView.borrarLigaProdProv(prove.id_proveedor)}" immediate="true" update="@([id$=proveedordetail])"/>
+                                 </p:column>
+                             </p:dataTable>
+                         </p:panel>
+                </h:panelGroup>
+            </h:panelGrid>
+            
+        </p:tab>
+        
+    </p:tabView>
+        
+  </h:form> 
+    
+</ui:composition>

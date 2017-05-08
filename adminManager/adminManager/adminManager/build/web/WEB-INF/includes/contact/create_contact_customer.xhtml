@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="contactform">
+       
+              
+        <p:panel id="contact" header="Nuevo contacto cliente" style="width: 150%">
+            <h:panelGrid id="contactgrid" columns="3">
+                    
+                    <p:outputLabel value="Cliente : "/>
+                    <p:selectOneMenu id="cliente" value="#{crearContactCustomerView.selectedCustomer}" filter="true" filterMatchMode="contains" effect="fade" panelStyle="width: 500px" style="width: 500px">
+                        <f:selectItems value="#{crearContactCustomerView.customerList}" var="cust" itemLabel="#{cust.nombre}&nbsp;#{cust.paterno}" itemValue="#{cust.id}"/>
+                    </p:selectOneMenu>
+                    <p:message id="clientemsg" for="cliente" showDetail="false" showSummary="true"/>
+                
+                    <p:outputLabel value="Nombre :"/>
+                    <p:inputText id="nombre" maxlength="29" value="#{crearContactCustomerView.contact.nombre}" required="true" style="width: 100%" requiredMessage="Nombre es un campo requerido."/>
+                    <p:message id="nombremessage" for="nombre" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Paterno :"/>
+                    <p:inputText id="paterno" maxlength="29" value="#{crearContactCustomerView.contact.paterno}" required="true" requiredMessage="Paterno es un campo requerido."/>
+                    <p:message id="paternomessage" for="paterno" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Materno :"/>
+                    <p:inputText id="materno" maxlength="29" value="#{crearContactCustomerView.contact.materno}" required="false"/>
+                    <p:message id="maternomessage" for="materno" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Télefono :"/>
+                    <p:inputText id="telefono" maxlength="29" value="#{crearContactCustomerView.contact.telefono}" required="false"/>
+                    <p:message id="telefonomessage" for="telefono" showDetail="false" showSummary="true"/>
+                                                      
+                    <p:outputLabel value="Celular :"/>
+                    <p:inputText id="celular" maxlength="29" value="#{crearContactCustomerView.contact.celular}" required="false"/>
+                    <p:message id="celularmessage" for="celular" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Fax :"/>
+                    <p:inputText id="fax" maxlength="29" value="#{crearContactCustomerView.contact.fax}" required="false"/>
+                    <p:message id="faxmessage" for="fax" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="E-mail :"/>
+                    <p:inputText id="email" maxlength="29" value="#{crearContactCustomerView.contact.email}" required="false"/>
+                    <p:message id="emailmessage" for="email" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Etiqueta :"/>
+                    <p:inputTextarea id="etiqueta" maxlength="254" value="#{crearContactCustomerView.contact.etiqueta}" required="false" autoResize="false" rows="3" cols="50"/>
+                    <p:message id="etiquetamessage" for="etiqueta" showDetail="false" showSummary="true"/>
+                    
+                    <p:separator/>
+                    <p:separator/>
+                    <p:commandButton type="submit" value="Crear" action="#{crearContactCustomerView.createContactCustomer()}" update=":contactform:contactgrid"/>
+                    
+                </h:panelGrid>
+ 
+        </p:panel>
+       
+   </h:form>
+    
+</ui:composition>
+

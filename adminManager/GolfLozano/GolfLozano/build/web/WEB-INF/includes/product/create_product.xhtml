@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="productoform" enctype="multipart/form-data">
+    
+    <p:panel id="productpanel" header="Crear nuevo producto">
+        
+        <h:panelGrid columns="3" >
+                       
+            <p:outputLabel value="Nombre : "/>
+            <p:inputText id="nombrepro" value="#{productosView.product.nombre}"  style="width: 500px" maxlength="49" required="true" requiredMessage="Nombre producto es un campo requerido."/>
+            <p:message id="nombrepromsg" for="nombrepro" showSummary="true" showDetail="false"/>
+            
+            <p:outputLabel value="Unidad de almacenamiento : "/>
+            <p:selectOneMenu id="unidadalma" binding="#{productosView.unidad_cpt}" value="#{productosView.product.id_unidadAlmacenamiento}"  style="width: 350px" filter="true" filterMatchMode="contains" effect="fade">
+                <f:selectItem itemLabel="Selecciona..." itemValue="0"/>
+                <f:selectItems var="unidad" value="#{productosView.unidadList}" itemLabel="#{unidad.nombre}" itemValue="#{unidad.id}"/>
+            </p:selectOneMenu>
+            <p:message id="unidadalmamsg" for="unidadalma" showSummary="true"/>           
+            
+            <p:outputLabel value="Almacén : "/>
+            <p:selectOneMenu id="almacen"  binding="#{productosView.almacen_cpt}" value="#{productosView.product.id_almacen}" style="width: 350px" filter="true" filterMatchMode="contains" effect="fade">
+                <f:selectItem itemLabel="Selecciona..." itemValue="0"/>
+                <f:selectItems var="almacen" value="#{productosView.almacenList}" itemLabel="#{almacen.nombre}" itemValue="#{almacen.id}"/>
+            </p:selectOneMenu>
+            <p:message id="almacenmsg" for="almacen" showSummary="true"/>  
+            
+            <p:outputLabel value="División : "/>
+            <p:selectOneMenu id="division"  binding="#{productosView.division_cpt}" value="#{productosView.product.id_division}" style="width: 350px" filter="true" filterMatchMode="contains" effect="fade">
+                <f:selectItem itemLabel="Selecciona..." itemValue="0"/>
+                <f:selectItems var="division" value="#{productosView.divisionList}" itemLabel="#{division.nombre}" itemValue="#{division.id}"/>
+            </p:selectOneMenu>
+            <p:message id="divisionmsg" for="division" showSummary="true"/>  
+            
+            <p:outputLabel value="Familia : "/>
+            <p:selectOneMenu id="familia" binding="#{productosView.familia_cpt}" value="#{productosView.product.id_familia}" style="width: 350px" filter="true" filterMatchMode="contains" effect="fade">
+                <f:selectItem itemLabel="Selecciona..." itemValue="0"/>
+                <f:selectItems var="familia" value="#{productosView.familiaList}" itemLabel="#{familia.nombre}" itemValue="#{familia.id}"/>
+            </p:selectOneMenu>
+            <p:message id="familiamsg" for="familia" showSummary="true"/> 
+            
+            
+            <p:outputLabel value="Nacional : "/>
+            <p:selectOneRadio id="nacional" value="#{productosView.product.nacional}">
+                <f:selectItem itemLabel="SI" itemValue="SI"/>
+                <f:selectItem itemLabel="NO" itemValue="NO"/>
+            </p:selectOneRadio>
+            <p:message id="nacionalmsg" for="nacional"/>
+            
+            <p:outputLabel value="Consignación : "/>
+            <p:selectOneRadio id="consignacion" value="#{productosView.product.consignacion}">
+                <f:selectItem itemLabel="SI" itemValue="SI"/>
+                <f:selectItem itemLabel="NO" itemValue="NO"/>
+            </p:selectOneRadio>
+            <p:message id="consignacionmsg" for="consignacion"/>
+            
+            <p:outputLabel value="OEM : "/>
+            <p:inputText id="oem" style="width: 350px" value="#{productosView.product.oem}" maxlength="29" />
+            <p:message id="oemmsg" for="oem"/>
+            
+            <p:outputLabel value="No. parte proveedor : "/>
+            <p:inputText id="nopte" style="width: 350px" value="#{productosView.product.noPteProv}" maxlength="29" />
+            <p:message id="noptemsg" for="nopte"/>
+            
+          
+            <p:outputLabel value="Ubicación: "/>
+            <p:inputText id="ubicacion" style="width: 350px" value="#{productosView.product.ubicacion}" maxlength="29" />
+            <p:message id="ubicacionmsg" for="ubicacion"/>
+                         
+                     
+            <p:outputLabel value="Descripción Español : "/>
+            <p:inputTextarea id="descesp"  value="#{productosView.product.desc_esp}" maxlength="254"  cols="35" rows="3" autoResize="true"/>
+            <p:message id="descespmsg" for="descesp"/>
+            
+            <p:outputLabel value="Descripción Inglés : "/>
+            <p:inputTextarea id="descing"  value="#{productosView.product.desc_ing}" maxlength="254"  cols="35" rows="3" autoResize="true"/>
+            <p:message id="descingmsg" for="descing"/>
+            
+            <p:outputLabel value="Observaciones : "/>
+            <p:inputTextarea id="observacion" value="#{productosView.product.observaciones}" maxlength="254"  cols="35" rows="3" autoResize="true"/>
+            <p:message id="observacionmsg" for="observacion"/>
+            
+            <p:outputLabel value="Foto : " /> 
+            <p:fileUpload  id="foto" mode="advanced"  invalidFileMessage="Foto debe ser JPEG/JPG o PNG." allowTypes="/(\.|\/)(jpe?g|png)$/" auto="true"  label="Agregar foto" fileUploadListener="#{productosView.fileUploadLsnr}" binding="#{productosView.foto_cpt}" update=":productoform:fotomsg,:productoform:fotostatus"/>
+            <p:outputLabel value=""/>
+            
+            <p:outputLabel value=""/> 
+            <p:message for="foto" id="fotomsg" showSummary="true" showDetail="false"/>
+            <p:outputLabel value=""/> 
+            
+            <p:outputLabel value=""/> 
+            <p:outputLabel id="fotostatus" value="#{productosView.statusFoto}" style="font-weight: bold"/>
+            <p:outputLabel value=""/>           
+                                  
+            <p:commandButton type="submit" value="Crear" action="#{productosView.crearProducto}" update=":productoform"/> 
+            
+        </h:panelGrid>
+        
+        
+    </p:panel>
+    
+    </h:form>
+    
+    
+</ui:composition>

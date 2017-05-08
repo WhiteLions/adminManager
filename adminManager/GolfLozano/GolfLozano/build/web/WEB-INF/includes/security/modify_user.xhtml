@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="dtform">
+              
+        <p:dataTable id="userstable" editable="true" var="user" value="#{modifyUsersView.userList}" emptyMessage="No se encontrarón usuarios en el sistema.">
+            <f:facet name="header">
+                Usuarios
+            </f:facet>
+            
+            <p:ajax event="rowEdit" listener="#{modifyUsersView.onRowEdit}"/>
+                        
+            <p:column headerText="Nombre">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputLabel value="#{user.user}"/></f:facet>
+                    <f:facet name="input"><h:inputText value="#{user.user}" disabled="true" style="width: 100%"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+            
+            <p:column headerText="Rol">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputLabel value="#{user.rol}"/></f:facet>
+                    <f:facet name="input">
+                        <h:selectOneMenu value="#{user.rol}" style="width: 100%">
+                            <f:selectItems value="#{modifyUsersView.roletList}" var="role" itemLabel="#{role}" itemValue="#{role}">
+                            </f:selectItems>
+                        </h:selectOneMenu>
+                    </f:facet>
+                </p:cellEditor>             
+            </p:column>
+            
+            <p:column headerText="Activo">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputLabel value="#{user.active}"/></f:facet>
+                    <f:facet name="input">
+                        <h:selectOneMenu value="#{user.active}" style="width: 100%">
+                            <f:selectItems value="#{modifyUsersView.activeList}" var="active" itemLabel="#{active}" itemValue="#{active}">
+                            </f:selectItems>
+                        </h:selectOneMenu>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+            
+            <p:column style="width: 32px">
+                <p:rowEditor/>
+            </p:column>
+        </p:dataTable>
+        
+</h:form>
+    
+</ui:composition>
+

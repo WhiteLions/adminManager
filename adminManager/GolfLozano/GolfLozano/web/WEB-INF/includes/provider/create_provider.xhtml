@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="providerform">
+       
+        
+        <p:panel id="provider" header="Nuevo proveedor" style="width: 150%">
+            <h:panelGrid id="providergrid" columns="3">
+                    
+                    <p:outputLabel value="Persona Física : "/>
+                    <p:selectOneRadio id="fisica" value="#{crearProviderView.provider.pfisica}">
+                        
+                        <p:ajax event="change" update=":providerform"  />
+                        
+                        <f:selectItem itemLabel="SI" itemValue="SI"/>
+                        <f:selectItem itemLabel="NO" itemValue="NO"/>
+                    </p:selectOneRadio>
+                    <p:message id="proveedormsg" for="fisica" showDetail="false" showSummary="true" />  
+                    
+                    <p:outputLabel value="RFC :"/>
+                    <p:inputText id="rfc" value="#{crearProviderView.provider.rfc}" required="true" requiredMessage="RFC es un campo requerido." maxlength="14"/>
+                    <p:message id="rfcmessage" for="rfc" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Nombre :"/>
+                    <p:inputText id="nombre" style="width: 100%" value="#{crearProviderView.provider.nombre}" maxlength="99" required="true" requiredMessage="Nombre proveedor es un campo requerido."/>
+                    <p:message id="nombremessage" for="nombre" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Paterno :"/>
+                    <p:inputText id="paterno" value="#{crearProviderView.provider.paterno}" maxlength="29" disabled="#{crearProviderView.provider.pfisica == 'NO'}" required="true" requiredMessage="Paterno es un campo requerido."/>
+                    <p:message id="paternomessage" for="paterno" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Materno :"/>
+                    <p:inputText id="materno" value="#{crearProviderView.provider.materno}" disabled="#{crearProviderView.provider.pfisica == 'NO'}" required="false"/>
+                    <p:message id="maternomessage" for="materno" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Entrega Domicilio : "/>
+                    <p:selectOneRadio id="entrega" value="#{crearProviderView.provider.domicilio}">                                        
+                        <f:selectItem itemLabel="SI" itemValue="SI"/>
+                        <f:selectItem itemLabel="NO" itemValue="NO"/>
+                    </p:selectOneRadio>
+                    <p:message id="entregamsg" for="entrega" showDetail="false" showSummary="true" />  
+                    
+                    <p:outputLabel value="Formas de Pago :"/>
+                    <p:inputTextarea id="pago" value="#{crearProviderView.provider.formasPago}" maxlength="254" required="false" autoResize="false" rows="3" cols="50"/>
+                    <p:message id="pagomessage" for="pago" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Descripción :"/>
+                    <p:inputTextarea id="desc" value="#{crearProviderView.provider.desc}" maxlength="254" required="false" autoResize="false" rows="3" cols="50"/>
+                    <p:message id="descmessage" for="desc" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Web :"/>
+                    <p:inputText id="web" style="width: 100%" value="#{crearProviderView.provider.web}" maxlength="69" required="false"/>
+                    <p:message id="webmessage" for="web" showDetail="false" showSummary="true"/>
+                    
+                    <p:separator/>
+                    <p:separator/>
+                    <p:commandButton type="submit" value="Crear" action="#{crearProviderView.createProvider()}" update=":providerform:providergrid"/>
+                    
+                </h:panelGrid>
+ 
+        </p:panel>
+       
+   </h:form>
+    
+</ui:composition>
+

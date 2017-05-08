@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="entradaform">
+       
+        <p:panel header="Ingresar factura">
+         
+            <h:panelGrid columns="6" id="entradagrid">
+                
+                <p:outputLabel value="Importación : "/>
+                <p:selectOneRadio id="importacion" value="#{nuevaEntradaView.importacion}">
+                    <p:ajax update="@([id$=pedimento]),@([id$=tipo])" />
+                    <f:selectItem itemLabel="SI" itemValue="SI"/>
+                    <f:selectItem itemLabel="NO" itemValue="NO"/>
+                </p:selectOneRadio>
+                <p:outputLabel value=""/>
+                
+                <p:outputLabel value="Proveedor :" />
+                <p:selectOneMenu id="prover" binding="#{nuevaEntradaView.proveedor_combo}" value="#{nuevaEntradaView.factura.provider}" filter="true" filterMatchMode="contains" >
+                    <f:selectItems value="#{nuevaEntradaView.providerList}" var="prov" itemLabel="#{prov.nombre}&nbsp;#{prov.paterno}" itemValue="#{prov.id_proveedor}"/>
+                </p:selectOneMenu>
+                <p:message id="provermsg" for="prover" showDetail="false" showSummary="true"/>
+                
+                <p:outputLabel value="Fecha :"/>
+                <p:calendar id="fecha" value="#{nuevaEntradaView.factura.fecha}" required="true" readonlyInput="true" requiredMessage="Fecha es un campo requerido." showOn="button"/>
+                <p:message id="fechamsg" for="fecha" showDetail="false" showSummary="true"/>
+
+                <p:outputLabel value="Folio :"/>
+                <p:inputText id="folio" value="#{nuevaEntradaView.factura.folio}" required="true" maxlength="44" requiredMessage="Folio es un campo requerido."/>
+                <p:message id="foliomsg" for="folio" showSummary="true" showDetail="false"/>
+                
+                <p:outputLabel value="Pedimento :"/>
+                <p:inputText id="pedimento"  disabled="#{nuevaEntradaView.importacion == 'NO'}" maxlength="44" value="#{nuevaEntradaView.factura.pedimento}" required="true" requiredMessage="Pedimento es un campo requerido."/>
+                <p:message id="pedimentomsg" for="pedimento" showSummary="true" showDetail="false"/>
+                 
+                <p:outputLabel value="Divisa :"/>
+                <p:selectOneMenu id="divisa" value="#{nuevaEntradaView.factura.divisa}">
+                    <f:selectItems value="#{nuevaEntradaView.divisaList}" var="divi" itemLabel="#{divi.nombre}" itemValue="#{divi.id}" />
+                </p:selectOneMenu>
+                <p:message for="divisa" id="divisamsg" showDetail="false" showSummary="true"/>
+                
+                <p:outputLabel value="Tipo de cambio :"/>
+                <p:inputText id="tipo" disabled="#{nuevaEntradaView.importacion == 'NO'}" value="#{nuevaEntradaView.factura.tipocambio}" required="true" requiredMessage="Tipo de cambio es un campo requerido."/>
+                <p:message id="tipomsg" for="tipo" showSummary="true" showDetail="false"/>
+                
+                <p:outputLabel value="Sub-Total :"/>
+                <p:inputText id="subtotal" value="#{nuevaEntradaView.factura.subtotal}" required="true" requiredMessage="Subtotal es un campo requerido."/>
+                <p:message id="subtotalmsg" for="subtotal" showSummary="true" showDetail="false"/>
+                
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                
+                <p:outputLabel value="I.V.A. :"/>
+                <p:inputText id="iva" value="#{nuevaEntradaView.factura.iva}" required="true" requiredMessage="I.V.A. es un campo requerido."/>
+                <p:message id="ivamsg" for="iva" showSummary="true" showDetail="false"/>
+                
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                <p:outputLabel value=""/>
+                
+                <p:outputLabel value="Total :"/>
+                <p:inputText id="total" value="#{nuevaEntradaView.factura.total}" required="true" requiredMessage="Total es un campo requerido."/>
+                <p:message id="totalmsg" for="total" showSummary="true" showDetail="false"/>
+                
+                
+                <p:separator/>
+                <p:separator/>
+                <p:separator/>
+                <p:separator/>
+                <p:separator/>
+                <p:separator/>
+
+                
+                <p:outputLabel value="Producto :"/>    
+                <p:selectOneMenu id="productos" value="#{nuevaEntradaView.selectedProduct}" converter="#{productoConverter}" filter="true" filterMatchMode="contains">
+                     <p:ajax  id="productosajax" listener="#{nuevaEntradaView.loadUnidadesEntrada()}" update="@([id$=unentrada]),@([id$=productoqty]),@([id$=agregarbtn]),@([id$=preciouni])"/>
+                     <f:selectItems value="#{nuevaEntradaView.productList}"  var="product" itemLabel="#{product.nombre}" itemValue="#{product}"/>
+                </p:selectOneMenu>
+                <p:message id="productosmsg" for="productos" showDetail="false" showSummary="true"/>
+             
+                
+                <p:outputLabel value="Unidad entrada :"/>   
+                <p:selectOneMenu id="unentrada"  disabled="#{nuevaEntradaView.selectedProduct == null}" value="#{nuevaEntradaView.selectedUnidadPojo}" converter="#{unidadBaseConverter}" filter="true" filterMatchMode="contains">
+                    <f:selectItems value="#{nuevaEntradaView.unidadesEntradaList}"  var="unidad" itemLabel="#{unidad.nombre}" itemValue="#{unidad}"/>
+                </p:selectOneMenu>      
+                <p:message id="unentradamsg" for="unentrada" showDetail="false" showSummary="true"/>
+                
+                <p:outputLabel value="Cantidad :"/>
+                    <p:inputText id="productoqty" disabled="#{nuevaEntradaView.selectedProduct == null}" value="#{nuevaEntradaView.selectedQty}" maxlength="7" style="width: 100px" required="true" requiredMessage="Cantidad es un campo requerido."/>
+                    <p:message id="productoqtymsg" for="productoqty" showSummary="true" showDetail="false"/>           
+                
+                <p:outputLabel value="Precio unitario :"/>
+                    <p:inputText id="preciouni" disabled="#{nuevaEntradaView.selectedProduct == null}" value="#{nuevaEntradaView.preciouni}" maxlength="10" style="width: 100px" required="true" requiredMessage="Precio unitario es un campo requerido."/>
+                    <p:message id="preciounimsg" for="preciouni" showSummary="true" showDetail="false"/>
+                
+                    <p:commandButton  id="guardarbtn" type="submit" disabled="#{empty nuevaEntradaView.factura.productosList}" value="Ingresar factura" update=":entradaform" icon="ui-icon-check" action="#{nuevaEntradaView.crearFactura()}"/>
+                    
+
+                <p:outputLabel value=""/>
+                
+                    <p:commandButton  id="agregarbtn" disabled="#{nuevaEntradaView.selectedProduct == null}" type="submit" action="#{nuevaEntradaView.agregarProducto()}" value="Producto" update=":entradaform" icon="ui-icon-plusthick"/>
+                
+            </h:panelGrid>
+            
+            <p:dataTable id="productostbl" value="#{nuevaEntradaView.factura.productosList}" emptyMessage="No se han agregado productos." var="produ" >
+                
+                
+                <p:column headerText="ID" style="width: 80px; text-align: center">
+                    <p:outputLabel value="#{produ.product.id_producto}"/>
+                </p:column>
+                <p:column headerText="Nombre" style="width: 300px; text-align: center">
+                    <p:outputLabel value="#{produ.product.nombre}"/>
+                </p:column>
+                <p:column headerText="Unidad" style="width: 100px; text-align: center">
+                    <p:outputLabel value="#{produ.unidad.nombre}"/>
+                </p:column>
+                <p:column headerText="Cantidad" style="width: 80px; text-align: center">
+                    <p:outputLabel value="#{produ.cantidad}"/>
+                </p:column>
+                <p:column headerText="Precio Unitario" style="width: 110px; text-align: center">
+                    <p:outputLabel value="#{produ.precio_unitario}"/>
+                </p:column>
+                <p:column headerText="Importe" style="width: 110px; text-align: center">
+                    <p:outputLabel value="#{produ.importe}"/>
+                </p:column>
+                <p:column headerText="" style="width: 60px; text-align: center">
+                    <p:commandButton type="submit" actionListener="#{nuevaEntradaView.eliminarProducto(produ)}" immediate="true" update="@([id$=productostbl]),@([id$=guardarbtn])" icon="ui-icon-trash"/>
+                </p:column>
+                
+                <f:facet name="footer">
+                    <p:outputLabel value="Total importes : #{nuevaEntradaView.total_importes}"/>
+                </f:facet>
+                
+            </p:dataTable>
+            
+        </p:panel>
+       
+   </h:form>
+    
+</ui:composition>
+

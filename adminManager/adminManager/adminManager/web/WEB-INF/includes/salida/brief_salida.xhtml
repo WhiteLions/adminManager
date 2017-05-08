@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="briefSalidaForm">
+      
+        <p:tabView id="briefSalidaTab" dynamic="true" cache="true">
+            
+            <p:tab title="Consulta">
+                <p:dataTable id="consultaTable" selectionMode="single" selection="#{briefSalidaView.selectedSalida}" rowKey="#{salida.ID_SALIDA}" var="salida" value="#{briefSalidaView.salidasList}" filteredValue="#{briefSalidaView.salidasListFiltered}" emptyMessage="No se encontraron registros de salida." style="text-align: center">
+                    
+                    <p:ajax event="rowSelect" listener="#{briefSalidaView.onRowSelect}" update="@([id$=detalleTable])"/> 
+                    
+                    <p:column id="help" style="width: 20px">
+                        <span class="ui-icon ui-icon-extlink"/>
+                    </p:column>
+                    <p:column headerText="Fecha" style="width: 130px">
+                        <p:outputLabel value="#{salida.FECHA}"/>
+                    </p:column>
+                    <p:column headerText="Tipo Orden" style="width: 130px">
+                        <p:outputLabel value="#{salida.TIPO_ORDEN}"/>
+                    </p:column>
+                    <p:column headerText="Folio" style="width: 130px">
+                        <p:outputLabel value="#{salida.FOLIO}"/>
+                    </p:column>
+                    <p:column headerText="Cliente">
+                        <p:outputLabel value="#{salida.CLIENTE}"/>
+                    </p:column>
+                    <p:column headerText="Observaciones">
+                        <p:outputLabel value="#{salida.OBSERVACIONES}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
+            <p:tab title="Detalle">
+                <p:dataTable id="detalleTable" var="detalle" value="#{briefSalidaView.selectedSalida.listaDetalle}" emptyMessage="No se encontraron registros de detalle para la salida." style="text-align: center">
+                    <p:column headerText="Producto">
+                        <p:outputLabel value="#{detalle.PRODUCTO}"/>
+                    </p:column>
+                    <p:column headerText="Cantidad" style="width: 200px">
+                        <p:outputLabel value="#{detalle.CANTIDAD}"/>
+                    </p:column>
+                    <p:column headerText="Unidad Salida" style="width: 200px">
+                        <p:outputLabel value="#{detalle.UNIDAD}"/>
+                    </p:column>    
+                </p:dataTable>
+            </p:tab>
+       </p:tabView>
+       
+   </h:form>
+    
+</ui:composition>
+

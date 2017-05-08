@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition
+     xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:f="http://java.sun.com/jsf/core"
+     xmlns:h="http://java.sun.com/jsf/html"
+     xmlns:ui="http://java.sun.com/jsf/facelets"
+     xmlns:p="http://primefaces.org/ui"
+>
+
+<h:form>
+    <p:panelMenu style="width:220px">
+        <p:submenu label="Seguridad usuarios" rendered="#{loginBean.role=='ADMIN'}">
+            <p:menuitem value="Consultar/Modificar" icon="ui-icon-pencil" update=":maincontent" action="#{navigationBean.setActiveContent('/security/modify_user')}"/>
+            <p:menuitem value="Crear" icon="ui-icon-plus" update=":maincontent" action="#{navigationBean.setActiveContent('/security/create_user')}"/>
+            <p:menuitem value="Cambiar password" icon="ui-icon-locked" update=":maincontent" action="#{navigationBean.setActiveContent('/security/password_user')}"/>
+        </p:submenu>
+        <p:submenu label="Catálogos" rendered="#{loginBean.role=='ADMIN'}">
+            <p:menuitem value="Almacenes" icon="ui-icon-note" update=":maincontent" action="#{navigationBean.setActiveContent('/catalogs/catalog_almacen')}"/>
+            <p:menuitem value="Divisas" icon="ui-icon-note" update=":maincontent" action="#{navigationBean.setActiveContent('/catalogs/catalog_monedas')}"/>
+            <p:menuitem value="Divisiones" icon="ui-icon-note" update=":maincontent" action="#{navigationBean.setActiveContent('/catalogs/catalog_divisiones')}"/>
+            <p:menuitem value="Familias" icon="ui-icon-note" update=":maincontent" action="#{navigationBean.setActiveContent('/catalogs/catalog_familias')}"/>
+            <p:menuitem value="Tipo Orden" icon="ui-icon-note" update=":maincontent" action="#{navigationBean.setActiveContent('/catalogs/catalog_tipoorden')}"/>
+        </p:submenu>
+        <p:submenu label="Equivalencias" rendered="#{loginBean.role=='ADMIN'}">
+            <p:menuitem value="Consultar/Modificar" icon="ui-icon-pencil" update=":maincontent" action="#{navigationBean.setActiveContent('/catalogs/catalog_equivalencias_modify')}"/>
+            <p:menuitem value="Crear unidad" icon="ui-icon-plus" update=":maincontent" action="#{navigationBean.setActiveContent('/catalogs/catalog_unidades')}"/>
+            <p:menuitem value="Crear equivalencia" icon="ui-icon-plus" update=":maincontent" action="#{navigationBean.setActiveContent('/catalogs/catalog_equivalencias_create')}"/>
+        </p:submenu>
+        <p:submenu label="Clientes" rendered="#{loginBean.role=='ADMIN'}">
+            <p:menuitem value="Consultar/Modificar" icon="ui-icon-pencil" update=":maincontent" action="#{navigationBean.setActiveContent('/clients/modify_client')}"/>
+            <p:menuitem value="Crear cliente" icon="ui-icon-plus" update=":maincontent" action="#{navigationBean.setActiveContent('/clients/create_client')}"/>
+            <p:menuitem value="Crear contacto" icon="ui-icon-plus" update=":maincontent" action="#{navigationBean.setActiveContent('/contact/create_contact_customer')}"/>
+            <p:menuitem value="Crear dirección" icon="ui-icon-plus" update=":maincontent" action="#{navigationBean.setActiveContent('/address/create_address_customer')}"/>
+        </p:submenu>
+        
+        <p:submenu label="Proveedores" rendered="#{loginBean.role=='ADMIN'}">
+            <p:menuitem value="Consultar/Modificar" icon="ui-icon-pencil" update=":maincontent" action="#{navigationBean.setActiveContent('/provider/modify_provider')}"/>
+            <p:menuitem value="Crear proveedor" icon="ui-icon-plus" update=":maincontent" action="#{navigationBean.setActiveContent('/provider/create_provider')}"/>
+            <p:menuitem value="Crear contacto" icon="ui-icon-plus" update=":maincontent" action="#{navigationBean.setActiveContent('/contact/create_contact_provider')}"/>
+            <p:menuitem value="Crear dirección" icon="ui-icon-plus" update=":maincontent" action="#{navigationBean.setActiveContent('/address/create_address_provider')}"/>
+        </p:submenu>
+        
+        <p:submenu label="Productos" rendered="#{loginBean.role=='ADMIN'}">
+            <p:menuitem value="Consultar/Modificar" icon="ui-icon-pencil" update=":maincontent" action="#{navigationBean.setActiveContent('/product/modify_product')}"/>
+            <p:menuitem value="Crear producto" icon="ui-icon-plus" update=":maincontent" action="#{navigationBean.setActiveContent('/product/create_product')}"/>
+        </p:submenu>
+        
+        <p:submenu label="Inventario" rendered="#{loginBean.role=='ADMIN'}">
+            <p:menuitem value="Consultar" icon="ui-icon-pencil" update=":maincontent" action="#{navigationBean.setActiveContent('/inventario/consulta_inventario')}"/>
+        </p:submenu>
+        
+        <p:submenu label="Entradas" rendered="#{loginBean.role=='ADMIN'}">
+            <p:menuitem value="Consultar" icon="ui-icon-pencil" update=":maincontent" action="#{navigationBean.setActiveContent('/entrada/brief_entrada')}"/>
+            <p:menuitem value="Nueva Entrada" icon="ui-icon-plus" update=":maincontent" action="#{navigationBean.setActiveContent('/entrada/create_entrada')}"/>
+        </p:submenu>
+        
+        <p:submenu label="Salidas" rendered="#{loginBean.role=='ADMIN'}">
+            <p:menuitem value="Consultar" icon="ui-icon-pencil" update=":maincontent" action="#{navigationBean.setActiveContent('/salida/brief_salida')}"/>
+            <p:menuitem value="Nueva Salida" icon="ui-icon-plus" update=":maincontent" action="#{navigationBean.setActiveContent('/salida/create_salida')}"/>
+        </p:submenu>
+        
+                 
+    </p:panelMenu>
+</h:form>
+
+</ui:composition>

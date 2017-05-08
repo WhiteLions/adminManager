@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="equivform">
+              
+        <p:panel id="equivpnl" header="Nueva Equivalencia" style="width: 100%; text-align: center">
+            <h:panelGrid columns="7" style="margin: 0 auto"> 
+                <p:outputLabel value="1 x " style="font-weight: bolder"/>
+                <p:selectOneMenu id="fromUnit" value="#{equivalenciasView.selectedFrom}" filter="true" filterMatchMode="contains" effect="fade">
+                    <f:selectItems value="#{equivalenciasView.unidadesListFrom}" var="unfrom" itemLabel="#{unfrom.nombre}" itemValue="#{unfrom.id}"/>
+                </p:selectOneMenu>
+                <p:outputLabel value=" = " style="font-weight: bolder"/>
+                <p:spinner id="qty" value="#{equivalenciasView.qty}" min="0.001" stepFactor="0.25"/>
+                <p:outputLabel value=" x " style="font-weight: bolder"/>
+                <p:selectOneMenu id="toUnit" value="#{equivalenciasView.selectedTo}" filter="true" filterMatchMode="contains" effect="fade">
+                    <f:selectItems value="#{equivalenciasView.unidadesListTo}" var="unto" itemLabel="#{unto.nombre}" itemValue="#{unto.id}"/>
+                </p:selectOneMenu>
+                
+                <p:commandButton type="submit" value="Crear" action="#{equivalenciasView.createRelation()}" update=":equivform"/>
+                
+            </h:panelGrid>
+            
+        </p:panel>
+        
+    </h:form>
+    
+</ui:composition>
+

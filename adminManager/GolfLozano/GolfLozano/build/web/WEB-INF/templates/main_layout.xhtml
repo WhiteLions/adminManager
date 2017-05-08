@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title><ui:insert name="page_title">Default Page Title</ui:insert></title>
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit position="north" size="60" id="mainTop" >
+                
+                <h:panelGrid columns="1"> 
+             <!--comment   <h:panelGroup>
+                    <h:graphicImage value="resources/img/golf_lozano_logo.png"></h:graphicImage>
+                </h:panelGroup> -->
+                    <h:panelGroup>
+                    <h:form>
+                    <h:outputLabel value="Loggeado como #{loginBean.username}(#{loginBean.role})" style="font:arial;font-size:12px;font-weight:bold"/>
+                    <h:commandLink value="Salir" action="#{loginBean.doLogout()}" style="color:red;font-size:12px;font:arial"/>
+                    </h:form>
+                </h:panelGroup>
+             </h:panelGrid>
+            </p:layoutUnit>
+           
+            <p:layoutUnit position="west" size="230" id="mainLeft">
+                <ui:include src="/WEB-INF/templates/menu_base.xhtml"></ui:include>
+            </p:layoutUnit>
+            <p:layoutUnit position="center" id="mainCenter">
+                <h:panelGrid columns="1">
+                    <h:panelGroup id="maincontent">
+                        <ui:include src="/WEB-INF/includes/#{navigationBean.activeContent}.xhtml"></ui:include>
+                    </h:panelGroup>
+                    <h:panelGroup>
+                        <p:growl autoUpdate="true" id="messages" showDetail="true" globalOnly="true" life="7000"/>
+                    </h:panelGroup>
+                </h:panelGrid>
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>
+

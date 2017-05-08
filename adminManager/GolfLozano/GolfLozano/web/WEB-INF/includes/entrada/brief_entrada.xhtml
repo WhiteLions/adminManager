@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="entradaqueryform">
+      
+        <p:tabView id="entradasquerytab" dynamic="true" cache="true">
+            
+            <p:tab title="Consulta">
+                
+                <p:dataTable id="constbl" selectionMode="single" rowKey="#{factura.id}" selection="#{briefEntradaView.selectedFactura}" filteredValue="#{briefEntradaView.filteredFacturas}" value="#{briefEntradaView.facturaList}" emptyMessage="No se encontraron facturas." var="factura">
+                    
+                <p:column id="help" style="width: 20px">
+                <span class="ui-icon ui-icon-extlink"/>
+                </p:column>
+                    
+                    <p:ajax event="rowSelect" listener="#{briefEntradaView.onRowSelect}" update="@([id$=detalltbl])"/>
+                    
+                <p:column headerText="Fecha" filterBy="#{factura.fecha}" filterMatchMode="contains" style="text-align: center">
+                    <p:outputLabel value="#{factura.fecha}"/>
+                </p:column>
+                    
+                <p:column headerText="Folio" style="text-align: center">
+                    <p:outputLabel value="#{factura.folio}"/>
+                </p:column>              
+                    
+                    <p:column headerText="Proveedor" filterBy="#{factura.provider_str}" filterFunction="#{briefEntradaView.filterbyName}" style="text-align: center">
+                    <p:outputLabel value="#{factura.provider_str}"/>
+                </p:column>
+                    
+                <p:column headerText="Total" style="text-align: center">
+                    <p:outputLabel value="#{factura.total}"/>
+                </p:column>
+                    
+                </p:dataTable>
+                
+            </p:tab>
+            <p:tab title="Detalle">
+                <p:dataTable id="detalltbl" value="#{briefEntradaView.detalleList}" var="detalleFactura" emptyMessage="No hay registros de detalle para la factura seleccionada.">
+                
+                    <p:column headerText="Producto" style="text-align: center">
+                    <p:outputLabel value="#{detalleFactura.prod_nombre}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Unidad" style="text-align: center">
+                        <p:outputLabel value="#{detalleFactura.unidad_nombre}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Precio Unitario" style="text-align: center">
+                        <p:outputLabel value="#{detalleFactura.precio_unitario}"/>
+                    </p:column>
+                
+                    <p:column headerText="Cantidad" style="text-align: center">
+                        <p:outputLabel value="#{detalleFactura.cantidad}"/>
+                    </p:column>
+                    
+                </p:dataTable>
+            </p:tab>
+            <p:tab title="Ajustes">
+                
+             <p:panel id="positivos" toggleable="true">
+                <p:dataTable id="postbl">
+                    
+                <f:facet name="header">
+                    <p:outputPanel style="text-align: center">
+                    <h:outputText value="Ajustes entradas" />
+                    </p:outputPanel>
+                 </f:facet>    
+                    
+                <p:column id="help" style="width: 20px">
+                <span class="ui-icon ui-icon-extlink"/>
+                </p:column>
+                    
+                <p:column headerText="ID">
+                    
+                </p:column>
+                    
+                <p:column headerText="Producto">
+                    
+                </p:column>
+                    
+                <p:column headerText="Cantidad">
+                    
+                </p:column>
+                    
+                </p:dataTable>
+             </p:panel>
+                
+                <br/>
+                <p:separator style="width: 100%"/>
+                <br/>
+                
+             <p:panel id="negativos" toggleable="true">
+                <p:dataTable id="negtbl">
+                    
+                    <f:facet name="header">
+                    <p:outputPanel style="text-align: center">
+                    <h:outputText value="Ajustes salidas" />
+                    </p:outputPanel>
+                 </f:facet>
+                    
+                <p:column id="help" style="width: 20px">
+                <span class="ui-icon ui-icon-extlink"/>
+                </p:column>
+                    
+                <p:column headerText="ID">
+                    
+                </p:column>
+                    
+                <p:column headerText="Producto">
+                    
+                </p:column>
+                    
+                <p:column headerText="Cantidad">
+                    
+                </p:column>
+                    
+                </p:dataTable>
+             </p:panel>
+                
+                
+            </p:tab>
+            
+        </p:tabView>
+       
+   </h:form>
+    
+</ui:composition>
+

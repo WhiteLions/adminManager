@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="clientform">
+       
+        
+        <p:panel id="cliente" header="Nuevo cliente" style="width: 150%">
+            <h:panelGrid id="clientegrid" columns="3">
+                    
+                    <p:outputLabel value="Tipo Pesona : "/>
+                    <p:selectOneRadio id="fisica" value="#{crearClienteView.customer.pfisica}">
+                        
+                        <p:ajax event="change" update=":clientform:clientegrid"  />
+                        
+                        <f:selectItem itemLabel="Física" itemValue="SI"/>
+                        <f:selectItem itemLabel="Moral" itemValue="NO"/>
+                    </p:selectOneRadio>
+                    <p:message id="clientemsg" for="fisica" showDetail="false" showSummary="true" />  
+                    
+                    <p:outputLabel value="RFC :"/>
+                    <p:inputText id="rfc" value="#{crearClienteView.customer.rfc}" required="true" requiredMessage="RFC es un campo requerido." maxlength="14"/>
+                    <p:message id="rfcmessage" for="rfc" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Nombre :"/>
+                    <p:inputText id="nombre" style="width: 500px" value="#{crearClienteView.customer.nombre}" required="true" requiredMessage="Nombre cliente es un campo requerido." maxlength="99"/>
+                    <p:message id="nombremessage" for="nombre" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Paterno :"/>
+                    <p:inputText id="paterno" value="#{crearClienteView.customer.paterno}" maxlength="30" disabled="#{crearClienteView.customer.pfisica == 'NO'}" required="true" requiredMessage="Paterno es un campo requerido."/>
+                    <p:message id="paternomessage" for="paterno" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Materno :"/>
+                    <p:inputText id="materno" value="#{crearClienteView.customer.materno}" maxlength="30" disabled="#{crearClienteView.customer.pfisica == 'NO'}" required="false"/>
+                    <p:message id="maternomessage" for="materno" showDetail="false" showSummary="true"/>
+                    
+                    <p:outputLabel value="Descripción :"/>
+                    <p:inputTextarea id="desc" value="#{crearClienteView.customer.desc}" rows="3" cols="50" autoResize="false" maxlength="254"/>
+                    <p:message id="descmsg" for="desc" showDetail="false" showSummary="true"/>
+                    
+                    <p:separator/>
+                    <p:separator/>
+                    <p:commandButton type="submit" value="Crear" action="#{crearClienteView.createCustomer()}" update=":clientform:clientegrid"/>
+                    
+                </h:panelGrid>
+ 
+        </p:panel>
+       
+   </h:form>
+    
+</ui:composition>
+

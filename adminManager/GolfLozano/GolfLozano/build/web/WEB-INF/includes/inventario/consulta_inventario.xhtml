@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:form id="inventarioQueryForm">
+      
+        <p:panel id="inventarioQueryPanel" header="Inventario" style="text-align: center">
+            <p:dataTable id="inventarioMainTable" var="producto" value="#{consultaInventarioView.listaProductos}" filteredValue="#{consultaInventarioView.listaProductosFiltrado}" emptyMessage="No se encontraron productos en el almacén.">
+                
+                <p:column headerText="ID" style="width:150px" filterBy="#{producto.ID_PRODUCTO}" filterMatchMode="exact">
+                    <p:outputLabel value="#{producto.ID_PRODUCTO}"/>
+                </p:column>
+                
+                <p:column headerText="Nombre" filterBy="#{producto.NOMBRE}" filterFunction="#{consultaInventarioView.filterByProductName}">
+                    <p:outputLabel value="#{producto.NOMBRE}"/>
+                </p:column>
+                
+                <p:column headerText="Existencia" style="width:150px">
+                    <p:outputLabel value="#{producto.EXISTENCIA}"/>
+                </p:column>
+                
+                <p:column headerText="Unidad" style="width:200px">
+                    <p:outputLabel value="#{producto.UNIDAD}"/>
+                </p:column>
+                
+                <p:column headerText="Ubicación" style="width:200px">
+                    <p:outputLabel value="#{producto.UBICACION}"/>
+                </p:column>
+                
+            </p:dataTable>
+        </p:panel>
+        
+   </h:form>
+    
+</ui:composition>
+
